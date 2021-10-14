@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import MyButton from './UI/button/MyButton.jsx';
 
 const PostItem = (props) => (
   <div className="post">
@@ -10,7 +11,7 @@ const PostItem = (props) => (
       <div>{props.post.body}</div>
     </div>
     <div className="post__btns">
-      <button>Delete</button>
+      <MyButton onClick={() => props.remove(props.post)}>Delete</MyButton>
     </div>
   </div>
 );
