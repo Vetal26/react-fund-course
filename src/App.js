@@ -1,5 +1,3 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
 import React, { useEffect, useState } from 'react';
 import PostService from './API/PostService';
 import PostFilter from './components/PostFilter.jsx';
@@ -8,6 +6,7 @@ import PostList from './components/PostList.jsx';
 import MyButton from './components/UI/button/MyButton.jsx';
 import Loader from './components/UI/Loader/Loader.jsx';
 import MyModal from './components/UI/MyModal/MyModal.jsx';
+import { useFetching } from './hooks/useFetching';
 import { usePosts } from './hooks/usePosts';
 import './styles/App.css';
 
@@ -16,10 +15,13 @@ function App() {
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-  const [isPostLoading, setIsPostLoading] = useState(false);
+  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
+    // eslint-disable-next-line no-shadow
+    const posts = await PostService.getAll();
+    setPosts(posts);
+  });
 
   useEffect(() => {
-    // eslint-disable-next-line no-use-before-define
     fetchPosts();
   }, []);
 
@@ -27,17 +29,6 @@ function App() {
     setPosts([...posts, newPost]);
     setModal(false);
   };
-
-  async function fetchPosts() {
-    setIsPostLoading(true);
-    // eslint-disable-next-line no-shadow
-    setTimeout(async () => {
-      // eslint-disable-next-line no-shadow
-      const posts = await PostService.getAll();
-      setPosts(posts);
-      setIsPostLoading(false);
-    }, 1000);
-  }
 
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
@@ -53,6 +44,7 @@ function App() {
       </MyModal>
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
+      {postError && <h1>Error: {postError}</h1>}
       {isPostLoading ? (
         <div
           style={{
