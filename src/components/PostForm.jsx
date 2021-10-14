@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import MyInput from './UI/input/MyInput.jsx';
 import MyButton from './UI/button/MyButton.jsx';
 
-const PostForm = () => {
+// eslint-disable-next-line react/prop-types
+const PostForm = ({ create }) => {
   const [post, setPost] = useState({
     title: '',
     body: '',
@@ -14,6 +15,7 @@ const PostForm = () => {
       ...post,
       id: Date.now(),
     };
+    create(newPost);
     setPost({
       title: '',
       body: '',
