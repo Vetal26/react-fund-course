@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PostService from './API/PostService';
 import PostFilter from './components/PostFilter.jsx';
@@ -6,23 +8,32 @@ import PostList from './components/PostList.jsx';
 import MyButton from './components/UI/button/MyButton.jsx';
 import Loader from './components/UI/Loader/Loader.jsx';
 import MyModal from './components/UI/MyModal/MyModal.jsx';
+import Pagination from './components/UI/pagination/Pagination.jsx';
 import { useFetching } from './hooks/useFetching';
 import { usePosts } from './hooks/usePosts';
 import './styles/App.css';
+import { getPageCount } from './utils/pages';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-    // eslint-disable-next-line no-shadow
-    const posts = await PostService.getAll();
-    setPosts(posts);
-  });
+
+  const [fetchPosts, isPostLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page);
+      setPosts(response.data);
+      const totalCount = response.headers['x-total-count'];
+      setTotalPages(getPageCount(totalCount, limit));
+    },
+  );
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(limit, page);
   }, []);
 
   const createPost = (newPost) => {
@@ -32,6 +43,12 @@ function App() {
 
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
+  };
+
+  // eslint-disable-next-line no-shadow
+  const changePage = (page) => {
+    setPage(page);
+    fetchPosts(limit, page);
   };
 
   return (
@@ -62,6 +79,11 @@ function App() {
           title="JS"
         />
       )}
+      <Pagination
+        page={page}
+        changePage={changePage}
+        totalPages={totalPages}
+      ></Pagination>
     </div>
   );
 }

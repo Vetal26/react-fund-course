@@ -5,10 +5,10 @@ export const useFetching = (callback) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const fetching = async () => {
+  const fetching = async (...args) => {
     try {
       setIsLoading(true);
-      await callback();
+      await callback(...args);
       // eslint-disable-next-line no-shadow
     } catch (error) {
       setError(error.message);
