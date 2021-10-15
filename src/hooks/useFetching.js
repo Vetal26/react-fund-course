@@ -1,6 +1,6 @@
+/* eslint-disable import/prefer-default-export */
 import { useState } from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useFetching = (callback) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -9,9 +9,8 @@ export const useFetching = (callback) => {
     try {
       setIsLoading(true);
       await callback(...args);
-      // eslint-disable-next-line no-shadow
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }

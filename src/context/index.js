@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import { useContext } from 'react';
+import { createContext } from 'react';
 
-export const AuthContext = useContext(null);
+// eslint-disable-next-line import/prefer-default-export
+export const AuthContext = createContext(null);

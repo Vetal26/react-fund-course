@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import About from '../pages/About.jsx';
 import Login from '../pages/Login.jsx';
 import PostIdPage from '../pages/PostIdPage.jsx';

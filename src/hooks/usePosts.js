@@ -1,4 +1,6 @@
+/* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable arrow-body-style */
 import { useMemo } from 'react';
 
 export const useSortedPosts = (posts, sort) => {
@@ -14,14 +16,12 @@ export const useSortedPosts = (posts, sort) => {
 
 export const usePosts = (posts, sort, query) => {
   const sortedPosts = useSortedPosts(posts, sort);
-  const sortedAndSearchedPosts = useMemo(
-    () =>
-      sortedPosts.filter(
-        (post) => post.title.toLowerCase().includes(query.toLowerCase()),
-        [query, sortedPosts],
-      ),
-    // eslint-disable-next-line function-paren-newline
-  );
+
+  const sortedAndSearchedPosts = useMemo(() => {
+    return sortedPosts.filter((post) =>
+      post.title.toLowerCase().includes(query.toLowerCase()),
+    );
+  }, [query, sortedPosts]);
 
   return sortedAndSearchedPosts;
 };

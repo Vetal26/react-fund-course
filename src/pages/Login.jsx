@@ -11,14 +11,17 @@ const Login = () => {
     setIsAuth(true);
     localStorage.setItem('auth', 'true');
   };
-  <div>
-    <h1>Login</h1>
-    <form onSubmit={login}>
-      <MyInput type="text" placeholder="Enter login" />
-      <MyInput type="password" placeholder="Enter password" />
-      <MyButton>Log In</MyButton>
-    </form>
-  </div>;
+
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={login}>
+        <MyInput type="text" placeholder="Enter login" />
+        <MyInput type="password" placeholder="Enter password" />
+        <MyButton>Log In</MyButton>
+      </form>
+    </div>
+  );
 };
 
 export default Login;

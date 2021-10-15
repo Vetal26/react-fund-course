@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../context';
-import { publicRoutes, privateRoutes } from '../router/routes';
+import { publicRoutes, privateRoutes } from '../router';
 import Loader from './UI/Loader/Loader.jsx';
 
 const AppRouter = () => {
